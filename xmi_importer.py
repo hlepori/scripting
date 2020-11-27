@@ -10,14 +10,8 @@ class Dataframes:
 def urn_in_model(urn, model):
   return model in urn
 
-def import_xmi(directory):
-  print('Searching for .xmi files in directory:', directory)
-
-  for path in Path(directory).rglob('*.xmi'):
-    print('  *.xmi file found: ', path)
-
-    print('Creating tree...')   
-    tree = ET.parse(path)
+def import_xmi(xmiFileName):
+    tree = ET.parse("data/xml/"+xmiFileName+".xmi")
     print('Getting the root...') 
     root = tree.getroot()
 
@@ -221,7 +215,7 @@ def import_xmi(directory):
   out_property_logical_df = pd.DataFrame(logical_property_rows, columns = df_property_cols) 
   print('  *No more files to process')
 
-  with pd.ExcelWriter('data/xlsx/'+'AIRM 1.0.0.xlsx', engine='xlsxwriter') as writer:  
+  with pd.ExcelWriter('data/xlsx/' + xmiFileName + '.xlsx', engine='xlsxwriter') as writer:  
       out_contextual_class_df.to_excel(writer, sheet_name='Contextual Classes')
       out_conceptual_class_df.to_excel(writer, sheet_name='Conceptual Classes')
       out_logical_class_df.to_excel(writer, sheet_name='Logical Classes')
