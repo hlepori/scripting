@@ -1,5 +1,4 @@
 import xml.etree.ElementTree as ET
-from pathlib import Path
 import pandas as pd
 
 class Dataframes:
@@ -12,7 +11,7 @@ def urn_in_model(urn, model):
 
 def import_xmi(xmiFileName):
     tree = ET.parse("data/xml/"+xmiFileName+".xmi")
-    print('Getting the root...') 
+    print('Getting the root for file '+ 'data/xml/'+xmiFileName+'.xmi') 
     root = tree.getroot()
 
     number_uml_class = 0
@@ -191,40 +190,39 @@ def import_xmi(xmiFileName):
                         elif urn_in_model(attribute_urn, "LogicalModel"):
                           number_attribute_logical+=1 
                           logical_property_rows.append({"urn": attribute_urn, "name": attribute_name, "definition": attribute_definition, "parent": element_name, "type": attribute_type})
-                  
-            
-  #TODO: procesar connectors como atributos. separar main de supplements. volcar todo a diccionarios/dataframes y excel.
+
+#TODO: procesar connectors como atributos. separar main de supplements. volcar todo a diccionarios/dataframes y excel.
 
 
-  print('Number of element:', number_element)
-  print('Number of element in Contextual:', number_class_conceptual)
-  print('Number of element in Conceptual:', number_class_logical)
-  print('Number of element in Logical:', number_class_contextual)
-  print('Number of attribute:', number_attribute)
-  print('Number of attribute in Contextual:', number_attribute_contextual)
-  print('Number of attribute in Conceptual:', number_attribute_conceptual)
-  print('Number of attribute in Logical:', number_attribute_logical)
+    print('Number of element:', number_element)
+    print('Number of element in Contextual:', number_class_conceptual)
+    print('Number of element in Conceptual:', number_class_logical)
+    print('Number of element in Logical:', number_class_contextual)
+    print('Number of attribute:', number_attribute)
+    print('Number of attribute in Contextual:', number_attribute_contextual)
+    print('Number of attribute in Conceptual:', number_attribute_conceptual)
+    print('Number of attribute in Logical:', number_attribute_logical)
         
     
   
-  out_contextual_class_df = pd.DataFrame(contextual_class_rows, columns = df_class_cols)
-  out_conceptual_class_df = pd.DataFrame(conceptual_class_rows, columns = df_class_cols)
-  out_logical_class_df = pd.DataFrame(logical_class_rows, columns = df_class_cols)
-  out_property_contextual_df = pd.DataFrame(contextual_property_rows, columns = df_property_cols)      
-  out_property_conceptual_df = pd.DataFrame(conceptual_property_rows, columns = df_property_cols) 
-  out_property_logical_df = pd.DataFrame(logical_property_rows, columns = df_property_cols) 
-  print('  *No more files to process')
+    out_contextual_class_df = pd.DataFrame(contextual_class_rows, columns = df_class_cols)
+    out_conceptual_class_df = pd.DataFrame(conceptual_class_rows, columns = df_class_cols)
+    out_logical_class_df = pd.DataFrame(logical_class_rows, columns = df_class_cols)
+    out_property_contextual_df = pd.DataFrame(contextual_property_rows, columns = df_property_cols)      
+    out_property_conceptual_df = pd.DataFrame(conceptual_property_rows, columns = df_property_cols) 
+    out_property_logical_df = pd.DataFrame(logical_property_rows, columns = df_property_cols) 
+    print('  *No more files to process')
 
-  with pd.ExcelWriter('data/xlsx/' + xmiFileName + '.xlsx', engine='xlsxwriter') as writer:  
-      out_contextual_class_df.to_excel(writer, sheet_name='Contextual Classes')
-      out_conceptual_class_df.to_excel(writer, sheet_name='Conceptual Classes')
-      out_logical_class_df.to_excel(writer, sheet_name='Logical Classes')
+    with pd.ExcelWriter('data/xlsx/'+xmiFileName+'.xlsx', engine='xlsxwriter') as writer:  
+        out_contextual_class_df.to_excel(writer, sheet_name='Contextual Classes')
+        out_conceptual_class_df.to_excel(writer, sheet_name='Conceptual Classes')
+        out_logical_class_df.to_excel(writer, sheet_name='Logical Classes')
 
-      out_property_contextual_df.to_excel(writer, sheet_name='Contextual Properties')
-      out_property_conceptual_df.to_excel(writer, sheet_name='Conceptual Properties')
-      out_property_logical_df.to_excel(writer, sheet_name='Logical Properties')
-  
-  return Dataframes(out_contextual_class_df, out_conceptual_class_df, out_logical_class_df,  out_property_contextual_df, out_property_conceptual_df, out_property_logical_df)
+        out_property_contextual_df.to_excel(writer, sheet_name='Contextual Properties')
+        out_property_conceptual_df.to_excel(writer, sheet_name='Conceptual Properties')
+        out_property_logical_df.to_excel(writer, sheet_name='Logical Properties')
+    
+    return Dataframes(out_contextual_class_df, out_conceptual_class_df, out_logical_class_df,  out_property_contextual_df, out_property_conceptual_df, out_property_logical_df)
 
 def find_urn(urn, dataframes):
   

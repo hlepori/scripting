@@ -12,8 +12,8 @@ def main():
       if choice == "1":
         print('\n')
         print("[XMI to EXCEL] Generating Excel file from xmi...")
-        xmiFileName = input ("Name of the xmi file to import?");
-        xmi_importer.import_xmi(xmiFileName);
+        xmiFileName = input ("Name of the xmi file to import? ")
+        xmi_importer.import_xmi(xmiFileName)
         main()
       else:
         print("I don't understand your choice.")
