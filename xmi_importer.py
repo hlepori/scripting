@@ -38,6 +38,7 @@ def import_xmi(xmiFileName):
 
     print('Exploring children...') 
     for child in root:
+      print(child.tag)
       if child.tag =='{http://schema.omg.org/spec/XMI/2.1}Extension':
         for sub_child in child:
           if sub_child.tag == 'elements':
